@@ -1,5 +1,23 @@
 # SpendWise
 
+# Title of the project
+SpendWise
+
+# Summary of the project
+
+SpendWise is a private, local finance tracker for managing income, expenses, budgets,
+savings goals, and financial reports. It allows users to create an encrypted vault,
+track transactions, organize categories, monitor budgets, and save their progress
+without sending financial data to a server.
+
+# Languages and tools used
+
+Languages: HTML, CSS, and JavaScript.
+Other tools: Web Crypto API for AES-GCM encryption and PBKDF2 key derivation,
+Local Storage for vault data, Session Storage for active workspace state,
+browser cookies for login persistence, and Node.js for testing.
+
+
 SpendWise is a private, single-user finance tracker made with plain HTML, CSS, and JavaScript. It has no package installation step and does not send financial records to a server.
 
 ## Run it
@@ -8,7 +26,8 @@ SpendWise is a private, single-user finance tracker made with plain HTML, CSS, a
 2. Open a terminal in this project folder.
 3. Start a local web server:
 
-   ```sh
+   ```
+   sh
    python3 -m http.server 8000
    ```
 
@@ -52,7 +71,8 @@ tests/
 
 Node.js 18 or newer is required for the built-in test runner. From this folder, run:
 
-```sh
+```
+sh
 node --test tests/spendwise.test.cjs
 ```
 
