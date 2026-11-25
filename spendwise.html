@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SpendWise helps you understand your money, plan your budget, and make progress toward your goals.">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>SpendWise — Your money, in perspective</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/spendwise.css">
+  <script src="js/spendwise.js" defer></script>
+</head>
+<body>
+  <!-- ==============================================================
+       Authentication screen
+       ============================================================== -->
+  <!-- This screen is shown until a vault is created or successfully unlocked. -->
+  <main class="auth-shell" id="auth-screen">
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <a class="brand auth-brand" href="#" aria-label="SpendWise home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17.5 9 12l3 3 7-8"/><path d="M14 7h5v5"/></svg></span>
+        <span>spend<span>wise</span></span>
+      </a>
+      <div class="auth-copy">
+        <div class="eyebrow">A little more clarity, every day</div>
+        <h1 id="auth-title">Your money,<br><em>in perspective.</em></h1>
+        <p>Your private finance workspace stays on this device. Create a local vault to start tracking with confidence.</p>
+      </div>
+      <div class="auth-benefits" aria-label="SpendWise benefits">
+        <div><span class="benefit-check">✓</span> Track your income and spending</div>
+        <div><span class="benefit-check">✓</span> Keep an eye on budgets and goals</div>
+        <div><span class="benefit-check">✓</span> Your vault is encrypted with your password</div>
+      </div>
+      <div class="auth-privacy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg>
+        <span>Private by design. Your data is encrypted and stored only in this browser.</span>
+      </div>
+    </section>
+    <section class="auth-card" aria-label="Sign in or create a vault">
+      <div class="auth-tabs" role="tablist" aria-label="Account options">
+        <button class="auth-tab active" id="login-tab" type="button" role="tab" aria-selected="true">Unlock vault</button>
+        <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false">Create vault</button>
+      </div>
+      <div class="auth-heading"><h2 id="auth-form-title">Welcome back</h2><p id="auth-form-description">Enter your email and password to unlock your private workspace.</p></div>
+      <form id="auth-form" novalidate>
+        <div class="field-group" id="auth-name-group" hidden><label for="auth-name">Your name</label><input id="auth-name" name="name" autocomplete="name" placeholder="e.g. Alex Morgan"><span class="field-error" id="auth-name-error"></span></div>
+        <div class="field-group"><label for="auth-email">Email address</label><input id="auth-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"><span class="field-error" id="auth-email-error"></span></div>
+        <div class="field-group"><label for="auth-password">Password</label><input id="auth-password" name="password" type="password" autocomplete="current-password" required placeholder="At least 12 characters"><span class="field-hint" id="password-hint">Your password never leaves this device.</span><span class="field-error" id="auth-password-error"></span></div>
+        <div class="field-group" id="auth-confirm-group" hidden><label for="auth-confirm">Confirm password</label><input id="auth-confirm" name="confirm" type="password" autocomplete="new-password" placeholder="Enter your password again"><span class="field-error" id="auth-confirm-error"></span></div>
+        <div class="auth-error" id="auth-error" role="alert" hidden></div>
+        <button class="primary-button auth-submit" id="auth-submit" type="submit">Unlock my vault</button>
+      </form>
+      <p class="auth-footnote" id="auth-footnote">New to SpendWise? <button type="button" id="switch-to-register">Create your local vault</button></p>
+      <p class="auth-restore">Have an encrypted backup? <label for="auth-restore-file">Restore it</label><input class="sr-only" type="file" id="auth-restore-file" accept="application/json,.json"></p>
+      <p class="auth-warning">Important: This is a local-only app. If you forget your password or clear this browser's storage, your vault cannot be recovered. Keep an encrypted backup in a safe place.</p>
+    </section>
+  </main>
+
+  <!-- ==============================================================
+       Main application shell
+       ============================================================== -->
+  <!-- The app shell contains navigation, workspace views, and account controls. -->
+  <div class="app-shell" id="app-shell" hidden>
+    <!-- Primary navigation: each button activates one workspace view. -->
+    <aside class="sidebar" id="sidebar">
+      <a class="brand sidebar-brand" href="#" aria-label="SpendWise dashboard"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17.5 9 12l3 3 7-8"/><path d="M14 7h5v5"/></svg></span><span>spend<span>wise</span></span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg><span>Overview</span></button>
+        <button class="nav-item" type="button" data-view="transactions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Transactions</span><span class="nav-count" id="transaction-count">0</span></button>
+        <button class="nav-item" type="button" data-view="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Budgets</span></button>
+        <button class="nav-item" type="button" data-view="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>Savings goals</span></button>
+        <button class="nav-item" type="button" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h17m-14-4 4-5 3 2 5-7"/></svg><span>Reports</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" type="button" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8.6 8.6 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8.6 8.6 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7.5 7.5 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8.6 8.6 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8.6 8.6 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7.5 7.5 0 0 1 0 2Z"/></svg><span>Settings</span></button>
+        <div class="sidebar-profile"><span class="profile-avatar" id="profile-avatar">S</span><span class="profile-copy"><strong id="profile-name">Your workspace</strong><small>Personal account</small></span><button class="icon-button lock-button" id="lock-button" type="button" aria-label="Lock your vault" title="Lock vault"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></button></div>
+      </div>
+    </aside>
+
+    <!-- Main content area: desktop and mobile pages share this container. -->
+    <div class="main-area">
+      <!-- Top navigation: breadcrumb, date range, notifications, theme, and profile. -->
+      <header class="topbar">
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="mobile-menu" type="button" aria-label="Toggle navigation" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div class="breadcrumb"><span>Workspace</span><span class="crumb-separator">/</span><strong id="page-title">Overview</strong></div></div>
+        <div class="topbar-actions">
+          <label class="period-control"><span class="sr-only">Dashboard date range</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg><select id="dashboard-period" aria-label="Dashboard date range"><option value="month">This month</option><option value="last-month">Last month</option><option value="year">This year</option><option value="all">All time</option></select></label>
+          <button class="icon-button notification-button" id="notification-button" type="button" aria-label="View budget notifications" title="Budget notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot" id="notification-dot" hidden></span></button>
+          <button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+          <button class="top-avatar" id="top-avatar" type="button" data-view="settings" aria-label="Open account settings">S</button>
+        </div>
+      </header>
+
+      <!-- Workspace views: only the active section is visible at a time. -->
+      <div class="view-container">
+        <!-- Dashboard: overview cards, charts, recent transactions, and budget summary. -->
+        <section class="app-view active" id="view-dashboard" aria-labelledby="dashboard-heading">
+          <div class="page-heading"><div><div class="eyebrow">YOUR FINANCES, AT A GLANCE</div><h1 id="dashboard-heading">Good day, <span id="greeting-name">friend</span>.</h1><p>Here’s how things are looking with your money.</p></div><button class="primary-button" type="button" data-action="add-transaction"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add transaction</button></div>
+          <div class="stat-grid">
+            <article class="stat-card balance-card"><div class="stat-top"><span class="stat-label">Total balance</span><span class="stat-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></span></div><div class="stat-value" id="stat-balance">$0.00</div><div class="stat-foot"><span class="stat-indicator neutral"></span>All recorded time</div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Income</span><span class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span></div><div class="stat-value" id="stat-income">$0.00</div><div class="stat-foot"><span class="stat-indicator positive"></span><span id="income-period-label">This month</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Expenses</span><span class="stat-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m6-6-6 6-6-6"/></svg></span></div><div class="stat-value" id="stat-expenses">$0.00</div><div class="stat-foot"><span class="stat-indicator negative"></span><span id="expense-period-label">This month</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Net savings</span><span class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17.5 9 12l3 3 7-8"/><path d="M14 7h5v5"/></svg></span></div><div class="stat-value" id="stat-savings">$0.00</div><div class="stat-foot"><span class="stat-indicator neutral"></span><span id="savings-rate">Income minus expenses</span></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel chart-panel"><div class="panel-heading"><div><h2>Income vs. expenses</h2><p>Your money in and out over the last six months</p></div><span class="chart-legend"><i class="legend-income"></i>Income <i class="legend-expenses"></i>Expenses</span></div><div class="chart-wrap" id="trend-chart" role="img" aria-label="Income and expenses over the last six months"></div></article>
+            <article class="panel"><div class="panel-heading"><div><h2>Spending breakdown</h2><p>Where your money went this month</p></div><button class="panel-more" type="button" data-view="reports" aria-label="View spending report">•••</button></div><div class="donut-layout"><div class="donut-chart" id="category-chart" role="img" aria-label="Expense categories"></div><div class="chart-legend-list" id="category-legend"></div></div></article>
+          </div>
+          <div class="dashboard-grid lower-grid">
+            <article class="panel"><div class="panel-heading"><div><h2>Recent transactions</h2><p>Your latest money moves</p></div><button class="text-button" type="button" data-view="transactions">View all <span aria-hidden="true">→</span></button></div><div class="table-scroll"><table class="data-table compact"><thead><tr><th>Transaction</th><th>Category</th><th>Date</th><th class="align-right">Amount</th></tr></thead><tbody id="recent-transactions"></tbody></table></div><div class="empty-state small-empty" id="recent-empty" hidden><div class="empty-icon">↗</div><h3>No activity yet</h3><p>Add your first income or expense to see it here.</p><button class="text-button" type="button" data-action="add-transaction">Add a transaction →</button></div></article>
+            <article class="panel budget-summary-panel"><div class="panel-heading"><div><h2>Budget check-in</h2><p>Your monthly spending limits</p></div><button class="text-button" type="button" data-view="budgets">Manage <span aria-hidden="true">→</span></button></div><div class="budget-summary-list" id="budget-summary"></div><div class="empty-state small-empty" id="budget-summary-empty" hidden><div class="empty-icon">◷</div><h3>No budgets set</h3><p>Give your spending a gentle monthly guide.</p><button class="text-button" type="button" data-action="add-budget">Create a budget →</button></div></article>
+          </div>
+        </section>
+
+        <!-- Transactions: search, filtering, editing, deleting, and CSV export. -->
+        <section class="app-view" id="view-transactions" aria-labelledby="transactions-heading" hidden>
+          <div class="page-heading"><div><div class="eyebrow">YOUR MONEY, ORGANIZED</div><h1 id="transactions-heading">Transactions</h1><p>Every in and out, all in one place.</p></div><button class="primary-button" type="button" data-action="add-transaction"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add transaction</button></div>
+          <div class="panel">
+            <div class="filter-toolbar"><label class="search-control"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4 4"/></svg><input id="transaction-search" type="search" placeholder="Search transactions..." aria-label="Search transactions"></label><select id="transaction-type-filter" class="select-control" aria-label="Filter by transaction type"><option value="all">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select><select id="transaction-category-filter" class="select-control" aria-label="Filter by category"><option value="all">All categories</option></select><select id="transaction-date-filter" class="select-control" aria-label="Filter by date"><option value="all">All dates</option><option value="month">This month</option><option value="last-month">Last month</option><option value="year">This year</option></select><button class="secondary-button export-csv-button" type="button" data-action="export-csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>Export CSV</button></div>
+            <div class="table-scroll"><table class="data-table"><thead><tr><th>Transaction</th><th>Category</th><th>Payment method</th><th>Date</th><th class="align-right">Amount</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="transaction-rows"></tbody></table></div>
+            <div class="empty-state" id="transaction-empty" hidden><div class="empty-icon">⌕</div><h3>No transactions found</h3><p>Try changing your filters, or add your first transaction.</p><button class="primary-button" type="button" data-action="add-transaction">Add transaction</button></div>
+            <div class="table-footer"><span id="transaction-result-count">0 transactions</span><button class="text-button" id="clear-transaction-filters" type="button">Clear filters</button></div>
+          </div>
+        </section>
+
+        <!-- Budgets: monthly limits and spending progress for selected categories. -->
+        <section class="app-view" id="view-budgets" aria-labelledby="budgets-heading" hidden>
+          <div class="page-heading"><div><div class="eyebrow">A PLAN THAT FEELS LIKE YOU</div><h1 id="budgets-heading">Monthly budgets</h1><p>Set a thoughtful limit and keep your month in view.</p></div><button class="primary-button" type="button" data-action="add-budget"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Create budget</button></div>
+          <div class="budget-totals" id="budget-totals"></div><div class="budget-card-grid" id="budget-cards"></div>
+          <div class="empty-state panel empty-panel" id="budget-empty" hidden><div class="empty-icon">◷</div><h3>Start with one category</h3><p>Budgets are flexible monthly guides. Create one for an area you'd like to keep an eye on.</p><button class="primary-button" type="button" data-action="add-budget">Create your first budget</button></div>
+        </section>
+
+        <!-- Savings goals: targets, progress, deadlines, and contributions. -->
+        <section class="app-view" id="view-goals" aria-labelledby="goals-heading" hidden>
+          <div class="page-heading"><div><div class="eyebrow">LITTLE STEPS ADD UP</div><h1 id="goals-heading">Savings goals</h1><p>Make room for what you're looking forward to.</p></div><button class="primary-button" type="button" data-action="add-goal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Create a goal</button></div>
+          <div class="goal-overview panel" id="goal-overview"></div><div class="goal-grid" id="goal-cards"></div>
+          <div class="empty-state panel empty-panel" id="goals-empty" hidden><div class="empty-icon">◎</div><h3>What are you saving for?</h3><p>Set a target, add contributions as you go, and celebrate the progress.</p><button class="primary-button" type="button" data-action="add-goal">Create your first goal</button></div>
+        </section>
+
+        <!-- Reports: period totals, category spending, budget performance, and export. -->
+        <section class="app-view" id="view-reports" aria-labelledby="reports-heading" hidden>
+          <div class="page-heading"><div><div class="eyebrow">A CLEARER VIEW OF YOUR MONEY</div><h1 id="reports-heading">Reports</h1><p>Understand your spending and income over time.</p></div><div class="heading-actions"><select id="report-period" class="select-control" aria-label="Report period"><option value="month">This month</option><option value="last-month">Last month</option><option value="year">This year</option><option value="all">All time</option></select><button class="secondary-button" type="button" data-action="print-report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>Save as PDF</button><button class="secondary-button" type="button" data-action="export-csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>Export CSV</button></div></div>
+          <div class="stat-grid report-stat-grid" id="report-stats"></div>
+          <div class="report-grid"><article class="panel"><div class="panel-heading"><div><h2>Spending by category</h2><p>For your selected reporting period</p></div></div><div class="report-category-list" id="report-categories"></div></article><article class="panel"><div class="panel-heading"><div><h2>Budget performance</h2><p>Actual spending compared with your monthly limits</p></div></div><div class="report-budget-list" id="report-budgets"></div></article></div>
+          <article class="panel report-transactions"><div class="panel-heading"><div><h2>Transaction details</h2><p id="report-period-caption">For your selected reporting period</p></div></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Category</th><th class="align-right">Amount</th></tr></thead><tbody id="report-rows"></tbody></table></div><div class="empty-state small-empty" id="report-empty" hidden><h3>No transactions in this period</h3><p>Once you add transactions, you'll find your report here.</p></div></article>
+        </section>
+
+        <!-- Settings: profile, privacy, categories, and recurring transaction controls. -->
+        <section class="app-view" id="view-settings" aria-labelledby="settings-heading" hidden>
+          <div class="page-heading"><div><div class="eyebrow">MAKE IT YOURS</div><h1 id="settings-heading">Settings</h1><p>Your preferences and private workspace.</p></div></div>
+          <div class="settings-grid">
+            <article class="panel settings-panel"><div class="settings-title"><span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><div><h2>Profile &amp; preferences</h2><p>Choose how SpendWise looks and feels.</p></div></div>
+              <form id="settings-form" class="settings-form"><div class="field-group"><label for="settings-name">Display name</label><input id="settings-name" name="name" required maxlength="60"></div><div class="field-group"><label for="settings-currency">Display currency</label><select id="settings-currency" name="currency"><option value="USD">US Dollar (USD)</option><option value="EUR">Euro (EUR)</option><option value="GBP">British Pound (GBP)</option><option value="PHP">Philippine Peso (PHP)</option><option value="CAD">Canadian Dollar (CAD)</option><option value="AUD">Australian Dollar (AUD)</option></select><span class="field-hint">Changing currency changes display only; it does not convert recorded amounts.</span></div><div class="field-group"><label for="warning-threshold">Budget warning threshold</label><div class="input-suffix"><input id="warning-threshold" name="warningThreshold" type="number" min="50" max="99" step="1" required><span>%</span></div><span class="field-hint">Get a warning when a budget reaches this percentage. A separate alert appears at 100%.</span></div><button class="primary-button" type="submit">Save preferences</button></form>
+            </article>
+            <article class="panel settings-panel"><div class="settings-title"><span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></span><div><h2>Privacy &amp; backup</h2><p>Your encrypted vault stays in this browser.</p></div></div>
+              <div class="privacy-note"><strong>Encrypted on this device</strong><p>Your financial data is encrypted with your password before it is saved. SpendWise cannot recover a forgotten password.</p></div><div class="settings-actions"><button class="secondary-button" type="button" data-action="backup-vault">Download encrypted backup</button><label class="secondary-button file-button" for="restore-file">Restore encrypted backup</label><input class="sr-only" type="file" id="restore-file" accept="application/json,.json"></div><p class="field-hint">A backup file is encrypted. You will need your password to unlock it after restoring.</p><button class="danger-button" type="button" id="lock-from-settings">Lock vault</button>
+            </article>
+            <article class="panel settings-panel category-settings"><div class="settings-title"><span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="9" cy="5" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="8" cy="19" r="2" fill="currentColor"/></svg></span><div><h2>Categories</h2><p>Keep transactions organized your way.</p></div></div>
+              <div class="category-settings-columns"><div><h3>Expenses</h3><div id="expense-category-list" class="tag-list"></div><form id="add-expense-category" class="inline-add"><label class="sr-only" for="new-expense-category">New expense category</label><input id="new-expense-category" maxlength="24" placeholder="Add a category"><button class="secondary-button" type="submit">Add</button></form></div><div><h3>Income</h3><div id="income-category-list" class="tag-list"></div><form id="add-income-category" class="inline-add"><label class="sr-only" for="new-income-category">New income category</label><input id="new-income-category" maxlength="24" placeholder="Add a category"><button class="secondary-button" type="submit">Add</button></form></div></div>
+            </article>
+            <article class="panel settings-panel recurring-settings"><div class="settings-title"><span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.6-2L20 12M4 12l2.8 5a7 7 0 0 0 11.6-2"/></svg></span><div><h2>Recurring transactions</h2><p>Review and stop automatic entries.</p></div></div><div id="recurring-list" class="recurring-list"></div><p class="field-hint">Entries are generated on the next visit when they become due.</p></article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="modal-layer" hidden><section class="modal-card" id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"></section></div>
+  <div class="notification-popover" id="notification-popover" hidden aria-live="polite"></div>
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+</body>
+</html>
